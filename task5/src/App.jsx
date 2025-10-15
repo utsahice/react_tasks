@@ -1,39 +1,38 @@
-import React ,{useEffect}from "react"
-import axios from "axios"
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+
 function App() {
-  const Posts=()=>{
-    useEffect(()=>{
-      getPosts();
-    },[]);
-  }
-  const [post,setPosts]=useState();
-  const getPosts=()=>{
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    getPosts();
+  }, []);
+
+  const getPosts = () => {
     axios
-      .get(`https://jsonplaceholder.typicode.com/users`)
-      .then((res)=>{
+      .get("https://jsonplaceholder.typicode.com/users") 
+      .then((res) => {
         setPosts(res.data);
-        console.log(post);
-      }).catch((err)=>console.error(err))
-  }
+        console.log(res.data); 
+      })
+      .catch((err) => console.error(err));
+  };
+
   return (
     <>
       <h3>Hello</h3>
       <ul>
-        {post.map(
-            (posts)=>(
-              <li key={posts.id}></li>,
-              <li key={posts.name}></li>,
-              <li key={posts.username}></li>,
-              <li key={posts.email}></li>,
-              <li key={posts.address}></li>
-            )
-          )
-        }
+        {posts.map((post) => (
+          <li key={post.id}>
+            <strong>Name:</strong> {post.name} <br />
+            <strong>Username:</strong> {post.username} <br />
+            <strong>Email:</strong> {post.email} <br />
+            <strong>Address:</strong> {post.address.street}, {post.address.city}
+          </li>
+        ))}
       </ul>
-
     </>
-  )
+  );
 }
 
-export default App
+export default App;
